@@ -1,16 +1,19 @@
-import { api } from './config'
+import { api, opcoesFetch, enderecoApi } from './config'
 
-const listarClientes = () => 
-  api
-    .get('/clientes')
-    .then(resposta => resposta.data)
 
-const buscarClientePorId = id => 
+
+const listarClientes = () =>
+
+  fetch(enderecoApi, opcoesFetch('{clientes {nome cpf}})'))
+    .then(resposta => resposta.json())
+    .then(dados => dados.data.clientes)
+
+const buscarClientePorId = id =>
   api
     .get(`/clientes/cliente/${id}`)
     .then(resposta => resposta.data[0])
 
-const adicionarCliente = cliente => 
+const adicionarCliente = cliente =>
   api
     .post('/clientes/cliente', cliente)
     .then(resposta => resposta.data)
@@ -20,7 +23,7 @@ const alterarCliente = (id, cliente) =>
     .put(`/clientes/cliente/${id}`, cliente)
     .then(resposta => resposta.data)
 
-const removerCliente = id => 
+const removerCliente = id =>
   api
     .delete(`/clientes/cliente/${id}`)
     .then(resposta => resposta.data)
