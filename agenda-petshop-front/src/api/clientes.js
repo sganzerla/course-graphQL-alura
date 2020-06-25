@@ -1,15 +1,29 @@
 import { api, opcoesFetch } from './config'
 
+const urlApi = 'http://localhost:4000';
+
 const listarClientes = () =>
-  fetch('http://localhost:4000/', opcoesFetch('{clientes {id nome cpf }}'))
+  fetch(urlApi, opcoesFetch('{clientes {id nome cpf }}'))
     .then(resposta => resposta.json())
     .then(dados => dados.data.clientes)
 
 const buscarClientePorId = id =>
-  api.get(`/clientes/cliente/${id}`).then(resposta => resposta.data[0])
+
+  fetch(urlApi, opcoesFetch(
+    `
+    {
+      cliente( id: ${id}){
+        nome
+        cpf
+      }
+    }
+    `
+  ))
+  .then(resposta => resposta.json())
+  .then(dados => dados.data.cliente)
 
 const adicionarCliente = cliente =>
-  fetch('http://localhost:4000', opcoesFetch(`
+  fetch(urlApi, opcoesFetch(`
   mutation {
     adicionarCliente(nome: "${cliente.nome}", cpf: "${cliente.cpf}")
     {
@@ -23,7 +37,7 @@ const adicionarCliente = cliente =>
 
 
 const alterarCliente = (id, cliente) =>
-  fetch('http://localhost:4000', opcoesFetch(
+  fetch(urlApi, opcoesFetch(
     `
     mutation {
 
@@ -34,13 +48,10 @@ const alterarCliente = (id, cliente) =>
         ){
         nome
       }
-    }
-    
-    `
-  )
-
-  ).then(resposta => resposta.json())
-  .then(dados => dados.data)
+    }`
+  ))
+    .then(resposta => resposta.json())
+    .then(dados => dados.data)
 
 
 
