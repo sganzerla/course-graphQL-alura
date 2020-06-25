@@ -1,7 +1,7 @@
 import { api, opcoesFetch } from './config'
 
 const listarClientes = () =>
-  fetch('http://localhost:4000/', opcoesFetch('{clientes { nome cpf }}'))
+  fetch('http://localhost:4000/', opcoesFetch('{clientes {id nome cpf }}'))
     .then(resposta => resposta.json())
     .then(dados => dados.data.clientes)
 
@@ -23,7 +23,26 @@ const adicionarCliente = cliente =>
 
 
 const alterarCliente = (id, cliente) =>
-  api.put(`/clientes/cliente/${id}`, cliente).then(resposta => resposta.data)
+  fetch('http://localhost:4000', opcoesFetch(
+    `
+    mutation {
+
+      atualizarCliente(
+        id: ${id},
+        nome: "${cliente.nome}",
+        cpf: "${cliente.cpf}"
+        ){
+        nome
+      }
+    }
+    
+    `
+  )
+
+  ).then(resposta => resposta.json())
+  .then(dados => dados.data)
+
+
 
 const removerCliente = id =>
   api.delete(`/clientes/cliente/${id}`).then(resposta => resposta.data)
