@@ -19,8 +19,8 @@ const buscarClientePorId = id =>
     }
     `
   ))
-  .then(resposta => resposta.json())
-  .then(dados => dados.data.cliente)
+    .then(resposta => resposta.json())
+    .then(dados => dados.data.cliente)
 
 const adicionarCliente = cliente =>
   fetch(urlApi, opcoesFetch(`
@@ -56,7 +56,17 @@ const alterarCliente = (id, cliente) =>
 
 
 const removerCliente = id =>
-  api.delete(`/clientes/cliente/${id}`).then(resposta => resposta.data)
+  fetch(urlApi, opcoesFetch(
+    `
+    {
+      mutation {
+        deletarCliente( id: ${id})
+      }
+
+    }
+
+    `
+  ))
 
 export default {
   listarClientes,
