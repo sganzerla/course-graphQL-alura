@@ -1,37 +1,37 @@
-import React from "react";
-import { Mutation } from "react-apollo";
+import React from 'react'
+import { Mutation } from 'react-apollo'
 
-import { ADICIONAR_PET } from "../../../graphql/pets";
+import petsApi from '../../../api/pets'
+import { ADICIONAR_PET } from '../../../graphql/pets'
 
 class Novo extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      nome: "",
-      dono: "",
-      tipo: "",
-      observacoes: "",
-    };
+      nome: '',
+      donoId: '',
+      tipo: '',
+      observacoes: '',
+    }
 
-    this.gerenciarMudancas = this.gerenciarMudancas.bind(this);
-    // this.gerenciarEnvio = this.gerenciarEnvio.bind(this);
+    this.gerenciarMudancas = this.gerenciarMudancas.bind(this)
   }
 
   gerenciarMudancas(evento) {
-    const chave = evento.target.name;
+    const chave = evento.target.name
     const valor =
-      chave === "donoId" ? Number(evento.target.value) : evento.target.value;
-    this.setState({ [chave]: valor });
+      chave === 'donoId' ? Number(evento.target.value) : evento.target.value
+    this.setState({ [chave]: valor })
   }
 
-  gerenciarEnvio(evento) {
-    evento.preventDefault();
+  gerenciarEnvio(adicionarPet, evento) {
+    evento.preventDefault()
 
     adicionarPet({
       variables: this.state,
-    });
-    this.props.history.push("/pets");
+    })
+    // this.props.history.push('/pets')
   }
 
   render() {
@@ -41,17 +41,21 @@ class Novo extends React.Component {
 
         <Mutation mutation={ADICIONAR_PET}>
           {(adicionarPet, resposta) => {
-            console.log(resposta);
+            console.log(resposta)
             if (resposta.loading) {
-              return <p>Carregando</p>;
+              return <p>Carregando...</p>
             }
 
             if (resposta.error) {
-              return <p>Erro ... {resposta.error.networkError.result.errors[0].message}</p>;
+              console.log('erro', resposta.error.networkError.result)
+              return (
+                <p>
+                  Erro: {resposta.error.networkError.result.errors[0].message}
+                </p>
+              )
             }
-
             return (
-              <form onSubmit={this.gerenciarEnvio}>
+              <form onSubmit={this.gerenciarEnvio.bind(this, adicionarPet)}>
                 <div>
                   <label htmlFor="nome">Nome</label>
                   <input
@@ -65,7 +69,7 @@ class Novo extends React.Component {
                 <div>
                   <label htmlFor="donoId">dono</label>
                   <input
-                    type="text"
+                    type="string"
                     name="donoId"
                     id="donoId"
                     value={this.state.donoId}
@@ -95,12 +99,12 @@ class Novo extends React.Component {
 
                 <button type="submit">Enviar</button>
               </form>
-            );
+            )
           }}
         </Mutation>
       </div>
-    );
+    )
   }
 }
 
-export default Novo;
+export default Novo

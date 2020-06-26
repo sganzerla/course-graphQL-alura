@@ -13,12 +13,22 @@ export const LISTAR_PETS = gql`
       observacoes
     }
   }
-`;
+`
 
 export const ADICIONAR_PET = gql`
-  mutation adicionarPet($nome: String!, $donoId: Int!, $tipo: String, $observacoes: String) {
-    adicionarPet(nome: $nome, dono: $donoId, tipo: $tipo,observacoes: $observacoes){
+  mutation adicionarPet(
+    $nome: String!
+    $donoId: Int!
+    $tipo: String
+    $observacoes: String
+  ) {
+    adicionarPet(
+      nome: $nome
+      donoId: $donoId
+      tipo: $tipo
+      observacoes: $observacoes
+    ) {
       nome
     }
   }
-`;
+`
