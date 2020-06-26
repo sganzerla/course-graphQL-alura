@@ -8,14 +8,18 @@ Course Alura GraphQL - Convert Node API REST to Node API GraphQL and integrated 
 
 ## Utilizando Playground
 
-![Exemplo de Query](resources/cinnamon-20200626a-1.gif)
+### Exemplo de Query
+![Exemplo de Query](resources/cinnamon-20200626a-2.gif)
 
-![Exemplo de Mutation](resources/cinnamon-20200626a-2.gif)
+### Exemplo de Mutation
+![Exemplo de Mutation](resources/cinnamon-20200626a-1.gif)
 
 ### Continuar, incompleto
 
-- trocar cliente api rest front: clientes, servicos, atendimentos.
-- continuar api graphql rest pet.
+#### Front
+- trocar chamadas api rest para graphql : clientes, servicos, atendimentos.
+- continuar api graphql pet.
 
+#### Back
 - trocar api rest por graphql back: servicos e atendimentos
 
