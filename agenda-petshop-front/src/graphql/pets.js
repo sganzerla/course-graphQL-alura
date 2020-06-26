@@ -1,17 +1,24 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
-export const LISTAR_PETS =
-gql`
-    query {
-        pets {
-            id
-            nome
-            tipo
-            dono {
-                id
-                nome
-            }
-            observacoes
-        }
+export const LISTAR_PETS = gql`
+  query {
+    pets {
+      id
+      nome
+      tipo
+      dono {
+        id
+        nome
+      }
+      observacoes
     }
-`
+  }
+`;
+
+export const ADICIONAR_PET = gql`
+  mutation adicionarPet($nome: String!, $donoId: Int!, $tipo: String, $observacoes: String) {
+    adicionarPet(nome: $nome, dono: $donoId, tipo: $tipo,observacoes: $observacoes){
+      nome
+    }
+  }
+`;

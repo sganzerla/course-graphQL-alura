@@ -1,30 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Query } from "react-apollo";
-
-import petsApi from "../../../api/pets";
-
-import { LISTAR_PETS } from "../../../graphql/pets";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Query } from 'react-apollo'
+import petsApi from '../../../api/pets'
+import { LISTAR_PETS } from '../../../graphql/pets'
 
 class Pets extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       pets: [],
-    };
+    }
   }
 
   componentDidMount() {
-    this.carregarPets();
+    this.carregarPets()
   }
 
   deletarPet(id) {
-    petsApi.removerPet(id).then(() => this.carregarPets());
+    petsApi.removerPet(id).then(() => this.carregarPets())
   }
 
   carregarPets() {
-    petsApi.listarPets().then((pets) => this.setState({ pets }));
+    petsApi.listarPets().then(pets => this.setState({ pets }))
   }
 
   render() {
@@ -50,10 +48,10 @@ class Pets extends React.Component {
 
           <tbody>
             <Query query={LISTAR_PETS}>
-              {(data) => {
-                console.log(data);
-                const pets = data.pets || [];
-                return pets.map((pet) => (
+              {({ data }) => {
+                const pets = data.pets || []
+
+                return pets.map(pet => (
                   <tr>
                     <td>{pet.nome}</td>
                     <td>{pet.tipo}</td>
@@ -68,14 +66,14 @@ class Pets extends React.Component {
                       </button>
                     </td>
                   </tr>
-                ));
+                ))
               }}
             </Query>
           </tbody>
         </table>
       </div>
-    );
+    )
   }
 }
 
-export default Pets;
+export default Pets

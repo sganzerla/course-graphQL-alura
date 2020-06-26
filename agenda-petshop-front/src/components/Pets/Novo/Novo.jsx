@@ -1,32 +1,37 @@
-import React from 'react'
-import petsApi from '../../../api/pets'
+import React from "react";
+import { Mutation } from "react-apollo";
+
+import { ADICIONAR_PET } from "../../../graphql/pets";
 
 class Novo extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      nome: '',
-      dono: '',
-      tipo: '',
-      observacoes: ''
-    }
+      nome: "",
+      dono: "",
+      tipo: "",
+      observacoes: "",
+    };
 
-    this.gerenciarMudancas = this.gerenciarMudancas.bind(this)
-    this.gerenciarEnvio = this.gerenciarEnvio.bind(this)
+    this.gerenciarMudancas = this.gerenciarMudancas.bind(this);
+    // this.gerenciarEnvio = this.gerenciarEnvio.bind(this);
   }
 
   gerenciarMudancas(evento) {
-    const chave = evento.target.name
-    const valor = evento.target.value
-    this.setState({ [chave]: valor })
+    const chave = evento.target.name;
+    const valor =
+      chave === "donoId" ? Number(evento.target.value) : evento.target.value;
+    this.setState({ [chave]: valor });
   }
 
   gerenciarEnvio(evento) {
-    evento.preventDefault()
-    
-    petsApi.adicionarPet(this.state)
-    this.props.history.push('/pets')
+    evento.preventDefault();
+
+    adicionarPet({
+      variables: this.state,
+    });
+    this.props.history.push("/pets");
   }
 
   render() {
@@ -34,29 +39,68 @@ class Novo extends React.Component {
       <div>
         <h1>Novo Pet</h1>
 
-        <form onSubmit={this.gerenciarEnvio}>
-          <div>
-            <label htmlFor="nome">Nome</label>
-            <input type="text" name="nome" id="nome" value={this.state.nome} onChange={this.gerenciarMudancas} />
-          </div>
-          <div>
-            <label htmlFor="dono">dono</label>
-            <input type="text" name="dono" id="dono" value={this.state.dono} onChange={this.gerenciarMudancas} />
-          </div>
-          <div>
-            <label htmlFor="tipo">tipo</label>
-            <input type="text" name="tipo" id="tipo" value={this.state.tipo} onChange={this.gerenciarMudancas} />
-          </div>
-          <div>
-            <label htmlFor="observacoes">observacoes</label>
-            <input type="text" name="observacoes" id="observacoes" value={this.state.observacoes} onChange={this.gerenciarMudancas} />
-          </div>
+        <Mutation mutation={ADICIONAR_PET}>
+          {(adicionarPet, resposta) => {
+            console.log(resposta);
+            if (resposta.loading) {
+              return <p>Carregando</p>;
+            }
 
-          <button type="submit">Enviar</button>
-        </form>
+            if (resposta.error) {
+              return <p>Erro ... {resposta.error.networkError.result.errors[0].message}</p>;
+            }
+
+            return (
+              <form onSubmit={this.gerenciarEnvio}>
+                <div>
+                  <label htmlFor="nome">Nome</label>
+                  <input
+                    type="text"
+                    name="nome"
+                    id="nome"
+                    value={this.state.nome}
+                    onChange={this.gerenciarMudancas}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="donoId">dono</label>
+                  <input
+                    type="text"
+                    name="donoId"
+                    id="donoId"
+                    value={this.state.donoId}
+                    onChange={this.gerenciarMudancas}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="tipo">tipo</label>
+                  <input
+                    type="text"
+                    name="tipo"
+                    id="tipo"
+                    value={this.state.tipo}
+                    onChange={this.gerenciarMudancas}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="observacoes">observacoes</label>
+                  <input
+                    type="text"
+                    name="observacoes"
+                    id="observacoes"
+                    value={this.state.observacoes}
+                    onChange={this.gerenciarMudancas}
+                  />
+                </div>
+
+                <button type="submit">Enviar</button>
+              </form>
+            );
+          }}
+        </Mutation>
       </div>
-    )
+    );
   }
 }
 
-export default Novo
+export default Novo;
