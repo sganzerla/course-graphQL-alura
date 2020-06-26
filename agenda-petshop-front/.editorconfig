@@ -1,8 +1,0 @@
-root = true
-
-[*] // Aqui estamos dando match em TODOS os tipos de arquivos, mas você poderia especificar passando algo como: [*.{js,py}]
-indent_style = space
-indent_size = 2
-charset = utf-8
-trim_trailing_whitespace = false
-insert_final_newline = true
